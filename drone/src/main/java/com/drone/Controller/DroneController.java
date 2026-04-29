@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/drones")
+@AllArgsConstructor
 public class DroneController {
     @Autowired
     private final DroneService service;

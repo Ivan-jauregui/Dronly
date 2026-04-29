@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,7 +21,7 @@ public class Drone {
     @NotNull(groups = onUpdate.class , message = "El ID es requerido para actualizar")
     private Long id;
     @NotBlank(groups = {onCreate.class, onUpdate.class}, message = "El codigo es requerido")
-    @Column(message="",unique = true)
+    @Column(unique = true)
     private String code;
     @Min(value = 1, message = "La capacidad mínima es 1kg", groups = {onCreate.class, onUpdate.class})
     private Double capacity ;
@@ -30,4 +32,7 @@ public class Drone {
             message = "Estado no válido",
             groups = {onCreate.class, onUpdate.class})
     private String state;
+
+    @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)
+    private List<Misiones> misiones;
 }

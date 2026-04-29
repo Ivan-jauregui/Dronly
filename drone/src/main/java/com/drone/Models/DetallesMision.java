@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,8 +22,10 @@ public class DetallesMision {
     private String destino;
 
     @ManyToOne
-    @JoinColumn(name = "mision_id") // <--- Nombre en la base de datos (DB)
+    @JoinColumn(name = "mision_id")
     private Misiones mision;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "paquete_id")
+    private Paquete paquete;;
 }
