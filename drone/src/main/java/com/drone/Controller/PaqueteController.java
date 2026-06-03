@@ -1,12 +1,10 @@
 package com.drone.Controller;
 
-import com.drone.Dto.DroneDto;
 import com.drone.Dto.PaqueteDto;
-import com.drone.Models.Drone;
 import com.drone.Models.Paquete;
-import com.drone.Services.DroneService;
 import com.drone.Services.PaqueteService;
-import com.drone.Validation.ValidationGroups;
+import com.drone.Validation.onCreate;
+import com.drone.Validation.onUpdate;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +25,14 @@ public class PaqueteController {
 
 
     @PostMapping
-    private ResponseEntity<Paquete> save(@Validated(ValidationGroups.onCreate.class)
+    private ResponseEntity<Paquete> save(@Validated(onCreate.class)
                                        @Valid
                                        @RequestBody Paquete p){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(p));
     }
 
     @PutMapping
-    public Paquete update(@Validated(ValidationGroups.onUpdate.class)
+    public Paquete update(@Validated(onUpdate.class)
                         @Valid
                         @RequestBody Paquete p){
         return service.save(p);

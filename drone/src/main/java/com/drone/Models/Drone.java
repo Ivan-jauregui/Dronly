@@ -1,6 +1,6 @@
 package com.drone.Models;
 
-import com.drone.Validation.ValidationGroups.*;
+import com.drone.Enums.DroneState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,21 +19,28 @@ import java.util.List;
 public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull(groups = onUpdate.class , message = "El ID es requerido para actualizar")
     private Long id;
-    @NotBlank(groups = {onCreate.class, onUpdate.class}, message = "El codigo es requerido")
     @Column(unique = true)
     private String code;
-    @Min(value = 1, message = "La capacidad mínima es 1kg", groups = {onCreate.class, onUpdate.class})
+    @Column(nullable = false)
     private Double capacity ;
-    @NotBlank(groups = {onCreate.class, onUpdate.class} , message = "El modelo es requerido")
+    @Column(nullable = false)
     private String model;
 
-    @Pattern(regexp = "Disponible|EnMision|Mantenimiento",
-            message = "Estado no válido",
-            groups = {onCreate.class, onUpdate.class})
-    private String state;
+    @Enumerated(EnumType.STRING)
+    private DroneState state;
 
     @OneToMany(mappedBy = "drone",cascade = CascadeType.ALL)
     private List<Misiones> misiones;
+
+    @PrePersist
+    protected void onCreate(){
+        if(state==null){
+            state = DroneState.DISPONIBLE;
+        }
+        if(code==null){
+            code= UUID.randomUUID().toString().substring(0, 5);
+        }
+
+    }
 }
